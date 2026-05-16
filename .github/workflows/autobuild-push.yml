@@ -1,0 +1,24 @@
+name: Autobuild on push
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+    
+      - name: Cross-compile Windows
+        uses: ./.github/actions/cross-compile-win
+        with:
+          target: version_lib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlackSouls2Resize
+          path: bin/*.dll
